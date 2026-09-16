@@ -1,0 +1,12 @@
+bin/
+obj/
+*.db
+*.db-shm
+*.db-wal
+appsettings.*.local.json
+App_Data/MailDrop/
+wwwroot/uploads/
+.vs/
+.vscode/
+*.user
+**/secrets.json
