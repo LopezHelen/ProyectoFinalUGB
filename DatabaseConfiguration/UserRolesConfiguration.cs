@@ -9,7 +9,6 @@ namespace UGB.MVC.Aplicaciones.Seguras.DatabaseConfiguration
         public void Configure(EntityTypeBuilder<user_roles> builder)
         {
             builder.HasKey(x => x.id);
-            builder.Property(x => x.id).HasColumnName("id_user_role");
             builder.HasIndex(x => new { x.user_id, x.role_id }).IsUnique();
 
             builder.HasOne(x => x.user)

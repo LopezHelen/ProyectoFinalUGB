@@ -14,7 +14,7 @@ namespace UGB.MVC.Aplicaciones.Seguras.Entities
                 .Build();
 
             var optionsBuilder = new DbContextOptionsBuilder<StoreCTX>();
-            optionsBuilder.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+            optionsBuilder.UseSqlite(configuration.GetConnectionString("DefaultConnection"));
 
             return new StoreCTX(optionsBuilder.Options);
         }

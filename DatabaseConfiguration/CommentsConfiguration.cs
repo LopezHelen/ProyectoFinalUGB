@@ -9,7 +9,6 @@ namespace UGB.MVC.Aplicaciones.Seguras.DatabaseConfiguration
         public void Configure(EntityTypeBuilder<comments> builder)
         {
             builder.HasKey(x => x.id);
-            builder.Property(x => x.id).HasColumnName("id_comment");
             builder.Property(x => x.content).IsRequired().HasMaxLength(200);
 
             builder.HasOne(x => x.user)

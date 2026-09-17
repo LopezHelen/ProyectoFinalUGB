@@ -9,9 +9,8 @@ namespace UGB.MVC.Aplicaciones.Seguras.DatabaseConfiguration
         public void Configure(EntityTypeBuilder<posts> builder)
         {
             builder.HasKey(x => x.id);
-            builder.Property(x => x.id).HasColumnName("id_post");
             builder.Property(x => x.title).IsRequired().HasMaxLength(100);
-            builder.Property(x => x.content).IsRequired().HasColumnType("text");
+            builder.Property(x => x.content).IsRequired();
 
             builder.HasOne(x => x.user)
                 .WithMany()

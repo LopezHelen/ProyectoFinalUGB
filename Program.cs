@@ -25,7 +25,7 @@ builder.Services.AddSingleton<IConfigureOptions<JwtSettingsBase>, JwtSettings>()
 builder.Services.AddScoped<ITokenService, TokenService>();
 
 builder.Services.AddDbContext<StoreCTX>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 var jwtSection = builder.Configuration.GetSection("Jwt");
 var jwtKey = jwtSection["Key"]

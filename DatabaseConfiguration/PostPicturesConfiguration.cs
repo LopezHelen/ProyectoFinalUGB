@@ -9,7 +9,6 @@ namespace UGB.MVC.Aplicaciones.Seguras.DatabaseConfiguration
         public void Configure(EntityTypeBuilder<post_pictures> builder)
         {
             builder.HasKey(x => x.id);
-            builder.Property(x => x.id).HasColumnName("id_post_picture");
             builder.Property(x => x.file_original_name).IsRequired().HasMaxLength(50);
             builder.Property(x => x.file_name).IsRequired().HasMaxLength(50);
             builder.Property(x => x.file_hash).IsRequired().HasMaxLength(100);
