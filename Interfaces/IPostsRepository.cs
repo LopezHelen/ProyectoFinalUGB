@@ -7,5 +7,7 @@ namespace UGB.MVC.Aplicaciones.Seguras.Interfaces
         Task<posts> Insert(posts post);
         Task<posts?> Get(int id);
         Task<IEnumerable<posts>> GetAllPublished();
+        Task<posts> Update(posts post);
+        Task Delete(posts post);
     }
 }

@@ -94,6 +94,43 @@ namespace UGB.MVC.Controllers
         }
 
         [Authorize(Roles = AdministratorRole)]
+        [HttpPost("create-admin")]
+        public async Task<ActionResult> CreateByAdmin([FromBody] CreateUserDTO createUserDTO)
+        {
+            var validation = createUserDTOValidator.Validate(createUserDTO);
+            if(!validation.IsValid)
+            {
+                return BadRequest(validation.ToErrorResponse());
+            }
+
+            if(await usersRepository.GetByEmail(createUserDTO.email) != null)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    Message = "Este correo ya se encuentra registrado.",
+                    StatusCode = 400
+                });
+            }
+
+            HashedPassword hashedPassword = HashHelper.Hash(createUserDTO.password);
+
+            users user = CustomMapper<users>.Map(createUserDTO);
+            user.password_hash = hashedPassword.Password;
+            user.salt = hashedPassword.Salt;
+            user.created_on = DateTime.UtcNow;
+            user.email_confirmed = true;
+
+            user = await usersRepository.Insert(user);
+
+            roles administratorRole = await rolesRepository.GetByName(AdministratorRole)
+                ?? throw new InvalidOperationException("No se encontró el rol de administrador.");
+
+            await rolesRepository.AssignRoleToUser(user.id, administratorRole.id);
+
+            return Ok(CustomMapper<UserDTO>.Map(user));
+        }
+
+        [Authorize(Roles = AdministratorRole)]
         [HttpGet("all")]
         public async Task<IActionResult> ListAll()
         {

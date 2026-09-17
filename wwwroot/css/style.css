@@ -1,0 +1,293 @@
+:root {
+  --bg: #f4f5f7;
+  --card-bg: #ffffff;
+  --text: #1f2430;
+  --muted: #6b7280;
+  --primary: #3454d1;
+  --primary-hover: #2c46b5;
+  --danger: #d64545;
+  --danger-hover: #b83a3a;
+  --border: #e2e4e9;
+  --radius: 8px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.topbar {
+  background: var(--card-bg);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+}
+
+.topbar-inner {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.topbar-sub {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.nav {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+}
+
+.nav button, .nav a {
+  background: none;
+  border: none;
+  color: var(--primary);
+  cursor: pointer;
+  font-size: 14px;
+  padding: 6px 10px;
+  border-radius: var(--radius);
+}
+
+.nav button:hover { background: #eef1fc; }
+
+.nav .session-info {
+  color: var(--muted);
+  margin-right: 6px;
+}
+
+.container {
+  max-width: 720px;
+  margin: 24px auto;
+  padding: 0 16px;
+}
+
+.view.hidden, .hidden { display: none !important; }
+
+h2 { margin-top: 0; }
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 420px;
+}
+
+.form label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.form input, .form textarea {
+  font-size: 14px;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-family: inherit;
+  color: var(--text);
+}
+
+.form button, #post-owner-actions button {
+  align-self: flex-start;
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 9px 16px;
+  border-radius: var(--radius);
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.form button:hover { background: var(--primary-hover); }
+
+button.danger { background: var(--danger); }
+button.danger:hover { background: var(--danger-hover); }
+
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.pictures-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.picture-item {
+  width: 110px;
+}
+
+.picture-item img {
+  width: 110px;
+  height: 110px;
+  object-fit: cover;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  display: block;
+}
+
+.picture-item .picture-name {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 4px;
+  word-break: break-all;
+}
+
+.posts-list { display: flex; flex-direction: column; gap: 10px; }
+
+.post-item {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  cursor: pointer;
+}
+
+.post-item:hover { border-color: var(--primary); }
+
+.post-item h3 { margin: 0 0 4px 0; font-size: 16px; }
+
+.post-meta { color: var(--muted); font-size: 13px; margin: 0; }
+
+.comments-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+
+.comment-item {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+  font-size: 14px;
+}
+
+.comment-item .comment-meta {
+  color: var(--muted);
+  font-size: 12px;
+  margin-bottom: 4px;
+}
+
+.comment-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.comment-actions button {
+  background: none;
+  border: none;
+  color: var(--primary);
+  cursor: pointer;
+  font-size: 12px;
+  padding: 0;
+}
+
+.comment-actions button.danger { color: var(--danger); }
+
+.comment-edit-box {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.comment-edit-box textarea {
+  font-size: 14px;
+  padding: 6px 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-family: inherit;
+}
+
+.comment-edit-box .comment-edit-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.comment-edit-box button {
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: var(--radius);
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.comment-edit-box button.cancel { background: var(--muted); }
+
+.owner-actions { display: flex; gap: 8px; margin-bottom: 16px; }
+
+.users-list { display: flex; flex-direction: column; gap: 8px; }
+
+.user-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px 14px;
+  font-size: 14px;
+}
+
+.user-item button {
+  background: var(--danger);
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: var(--radius);
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.link-btn {
+  background: none;
+  border: none;
+  color: var(--primary);
+  cursor: pointer;
+  font-size: 14px;
+  padding: 0;
+  margin-bottom: 16px;
+}
+
+.hint {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.message {
+  max-width: 720px;
+  margin: 16px auto 0 auto;
+  padding: 10px 16px;
+  border-radius: var(--radius);
+  font-size: 14px;
+}
+
+.message.ok {
+  background: #e6f7ec;
+  color: #1a7a3d;
+  border: 1px solid #b8e6c5;
+}
+
+.message.err {
+  background: #fdecec;
+  color: #b8241b;
+  border: 1px solid #f6c1bd;
+}

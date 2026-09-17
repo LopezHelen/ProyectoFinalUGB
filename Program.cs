@@ -28,8 +28,12 @@ builder.Services.AddDbContext<StoreCTX>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 var jwtSection = builder.Configuration.GetSection("Jwt");
-var jwtKey = jwtSection["Key"]
-    ?? throw new InvalidOperationException("La clave JWT no está configurada.");
+var jwtKey = jwtSection["Key"];
+if(string.IsNullOrWhiteSpace(jwtKey))
+{
+    throw new InvalidOperationException(
+        "La clave JWT no está configurada. Defínela con: dotnet user-secrets set \"Jwt:Key\" \"<clave-secreta>\"");
+}
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -63,6 +67,7 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseDefaultFiles();
 app.UseStaticFiles();
 app.UseMiddleware<ErrorHandlerMiddleware>();
 app.UseRouting();

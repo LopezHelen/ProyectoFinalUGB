@@ -29,5 +29,24 @@ namespace UGB.MVC.Aplicaciones.Seguras.Repositories
                 .OrderByDescending(x => x.created_on)
                 .ToListAsync();
         }
+
+        public async Task<posts> Update(posts post)
+        {
+            ctx.posts.Update(post);
+            await ctx.SaveChangesAsync();
+            return post;
+        }
+
+        public async Task Delete(posts post)
+        {
+            var relatedComments = ctx.comments.Where(x => x.post_id == post.id);
+            ctx.comments.RemoveRange(relatedComments);
+
+            var relatedPictures = ctx.post_pictures.Where(x => x.post_id == post.id);
+            ctx.post_pictures.RemoveRange(relatedPictures);
+
+            ctx.posts.Remove(post);
+            await ctx.SaveChangesAsync();
+        }
     }
 }

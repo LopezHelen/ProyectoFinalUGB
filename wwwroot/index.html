@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UGB Blog - Panel de pruebas</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <strong>UGB Blog</strong>
+    <span class="topbar-sub">panel de pruebas</span>
+    <nav id="nav" class="nav"></nav>
+  </div>
+</header>
+
+<div id="message" class="message hidden"></div>
+
+<main class="container">
+
+  <!-- REGISTRO -->
+  <section id="view-register" class="view hidden">
+    <h2>Crear cuenta</h2>
+    <form id="form-register" class="form">
+      <label>Correo electrónico
+        <input type="email" id="reg-email" required>
+      </label>
+      <label>Contraseña
+        <input type="password" id="reg-password" required>
+      </label>
+      <label>Confirmar contraseña
+        <input type="password" id="reg-password-confirm" required>
+      </label>
+      <button type="submit">Registrarme</button>
+    </form>
+
+    <div id="confirm-box" class="hidden">
+      <hr>
+      <h3>Confirmar correo</h3>
+      <p class="hint">
+        Revisa tu bandeja de entrada, o si <code>UsePickupDirectory</code> está activo,
+        abre el archivo <code>.eml</code> más reciente en
+        <code>App_Data/MailDrop</code> y copia el valor de <code>token=</code>.
+      </p>
+      <form id="form-confirm" class="form">
+        <label>Token de confirmación
+          <input type="text" id="confirm-token" placeholder="00000000-0000-0000-0000-000000000000" required>
+        </label>
+        <button type="submit">Confirmar correo</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- LOGIN -->
+  <section id="view-login" class="view hidden">
+    <h2>Iniciar sesión</h2>
+    <form id="form-login" class="form">
+      <label>Correo electrónico
+        <input type="email" id="login-email" required>
+      </label>
+      <label>Contraseña
+        <input type="password" id="login-password" required>
+      </label>
+      <button type="submit">Ingresar</button>
+    </form>
+  </section>
+
+  <!-- POSTS -->
+  <section id="view-posts" class="view">
+    <div id="new-post-box" class="card hidden">
+      <h2>Nueva publicación</h2>
+      <form id="form-post" class="form">
+        <label>Título
+          <input type="text" id="post-title" required>
+        </label>
+        <label>Contenido
+          <textarea id="post-content" rows="4" required></textarea>
+        </label>
+        <button type="submit">Publicar</button>
+      </form>
+    </div>
+
+    <h2>Publicaciones</h2>
+    <div id="posts-list" class="posts-list"></div>
+  </section>
+
+  <!-- DETALLE DE POST -->
+  <section id="view-post-detail" class="view hidden">
+    <button class="link-btn" id="btn-back-to-posts">&larr; Volver a publicaciones</button>
+
+    <article id="post-detail-card" class="card"></article>
+
+    <div id="post-owner-actions" class="owner-actions hidden">
+      <button id="btn-edit-post" class="hidden">Editar</button>
+      <button id="btn-delete-post" class="danger hidden">Eliminar</button>
+    </div>
+
+    <div id="edit-post-box" class="card hidden">
+      <h3>Editar publicación</h3>
+      <form id="form-edit-post" class="form">
+        <label>Título
+          <input type="text" id="edit-post-title" required>
+        </label>
+        <label>Contenido
+          <textarea id="edit-post-content" rows="4" required></textarea>
+        </label>
+        <button type="submit">Guardar cambios</button>
+      </form>
+    </div>
+
+    <div id="pictures-box" class="hidden">
+      <h3>Imágenes (máximo 5, .jpg o .png, 2 MB c/u)</h3>
+      <div id="pictures-list" class="pictures-list"></div>
+      <form id="form-picture" class="form">
+        <label>Adjuntar imagen
+          <input type="file" id="picture-file" accept=".jpg,.jpeg,.png" required>
+        </label>
+        <button type="submit">Subir imagen</button>
+      </form>
+    </div>
+
+    <h3>Comentarios</h3>
+    <div id="comments-list" class="comments-list"></div>
+
+    <form id="form-comment" class="form hidden">
+      <label>Agregar comentario
+        <textarea id="comment-content" rows="2" required></textarea>
+      </label>
+      <button type="submit">Comentar</button>
+    </form>
+    <p id="comment-login-hint" class="hint hidden">Inicia sesión para comentar.</p>
+  </section>
+
+  <!-- ADMIN -->
+  <section id="view-admin" class="view hidden">
+    <h2>Panel de administración</h2>
+
+    <div class="card">
+      <h3>Crear administrador</h3>
+      <p class="hint">No requiere confirmación de correo.</p>
+      <form id="form-admin" class="form">
+        <label>Correo electrónico
+          <input type="email" id="admin-email" required>
+        </label>
+        <label>Contraseña
+          <input type="password" id="admin-password" required>
+        </label>
+        <label>Confirmar contraseña
+          <input type="password" id="admin-password-confirm" required>
+        </label>
+        <button type="submit">Crear administrador</button>
+      </form>
+    </div>
+
+    <h3>Usuarios registrados</h3>
+    <div id="admin-users-list" class="users-list"></div>
+  </section>
+
+</main>
+
+<script src="js/app.js"></script>
+</body>
+</html>

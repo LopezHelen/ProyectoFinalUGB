@@ -1,3 +1,6 @@
+using System.Security.Cryptography;
+using System.Text.RegularExpressions;
+
 namespace UGB.MVC.Aplicaciones.Seguras.Helper
 {
     public static class ImageHelper
@@ -23,6 +26,38 @@ namespace UGB.MVC.Aplicaciones.Seguras.Helper
 
             extension = string.Empty;
             return false;
+        }
+
+        public static bool HasAllowedExtension(string fileName)
+        {
+            string extension = Path.GetExtension(fileName).ToLowerInvariant();
+            return extension is ".jpg" or ".jpeg" or ".png";
+        }
+
+        public static string ComputeSha256(byte[] data)
+        {
+            byte[] hash = SHA256.HashData(data);
+            return Convert.ToHexStringLower(hash);
+        }
+
+        public static string SanitizeFileName(string originalName, string extension)
+        {
+            string nameOnly = Path.GetFileNameWithoutExtension(originalName);
+            string sanitized = Regex.Replace(nameOnly, @"[^a-zA-Z0-9_-]", "_");
+            sanitized = Regex.Replace(sanitized, "_+", "_").Trim('_');
+
+            if(string.IsNullOrEmpty(sanitized))
+            {
+                sanitized = "imagen";
+            }
+
+            const int maxBaseLength = 40;
+            if(sanitized.Length > maxBaseLength)
+            {
+                sanitized = sanitized[..maxBaseLength];
+            }
+
+            return sanitized + extension;
         }
     }
 }

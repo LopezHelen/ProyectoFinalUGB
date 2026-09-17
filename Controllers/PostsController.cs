@@ -17,6 +17,8 @@ namespace UGB.MVC.Controllers
         IValidator<CreatePostDTO> createPostDTOValidator,
         IPostsRepository postsRepository) : ControllerBase
     {
+        private const string AdministratorRole = "Administrator";
+
         [HttpPost]
         public async Task<ActionResult> Create([FromBody] CreatePostDTO createPostDTO)
         {
@@ -67,6 +69,69 @@ namespace UGB.MVC.Controllers
             }
 
             return Ok(MapToDTO(post));
+        }
+
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult> Update(int id, [FromBody] CreatePostDTO updatePostDTO)
+        {
+            var validation = createPostDTOValidator.Validate(updatePostDTO);
+            if(!validation.IsValid)
+            {
+                return BadRequest(validation.ToErrorResponse());
+            }
+
+            posts? post = await postsRepository.Get(id);
+            if(post == null)
+            {
+                return NotFound(new ErrorResponse
+                {
+                    Message = "La publicación no existe.",
+                    StatusCode = 404
+                });
+            }
+
+            int userId = (int)User.GetProperty("UserId", typeof(int));
+            if(post.user_id != userId)
+            {
+                return StatusCode(403, new ErrorResponse
+                {
+                    Message = "No tiene permiso para modificar esta publicación.",
+                    StatusCode = 403
+                });
+            }
+
+            post.title = updatePostDTO.title;
+            post.content = updatePostDTO.content;
+            post = await postsRepository.Update(post);
+
+            return Ok(MapToDTO(post));
+        }
+
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            posts? post = await postsRepository.Get(id);
+            if(post == null)
+            {
+                return NotFound(new ErrorResponse
+                {
+                    Message = "La publicación no existe.",
+                    StatusCode = 404
+                });
+            }
+
+            int userId = (int)User.GetProperty("UserId", typeof(int));
+            if(post.user_id != userId && !User.IsInRole(AdministratorRole))
+            {
+                return StatusCode(403, new ErrorResponse
+                {
+                    Message = "No tiene permiso para eliminar esta publicación.",
+                    StatusCode = 403
+                });
+            }
+
+            await postsRepository.Delete(post);
+            return NoContent();
         }
 
         private static PostDTO MapToDTO(posts post)

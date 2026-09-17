@@ -10,6 +10,7 @@ namespace UGB.MVC.Aplicaciones.Seguras.Repositories
             services.AddScoped<IRolesRepository, RolesRepository>();
             services.AddScoped<IPostsRepository, PostsRepository>();
             services.AddScoped<ICommentsRepository, CommentsRepository>();
+            services.AddScoped<IPostPicturesRepository, PostPicturesRepository>();
             return services;
         }
     }

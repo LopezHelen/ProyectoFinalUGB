@@ -17,7 +17,7 @@ namespace UGB.MVC.Aplicaciones.Seguras.Controllers
         IValidator<LoginUserDTO> loginUserDTOValidator,
         ITokenService tokenService) : ControllerBase
     {
-        private const int MaxFailedAttempts = 3;
+        private const int MaxFailedAttempts = 5;
         private static readonly TimeSpan LockoutDuration = TimeSpan.FromMinutes(15);
 
         [HttpPost("authenticate")]
@@ -39,7 +39,11 @@ namespace UGB.MVC.Aplicaciones.Seguras.Controllers
             {
                 if(user.locked_until.Value > DateTime.UtcNow)
                 {
-                    return InvalidCredentials();
+                    return BadRequest(new ErrorResponse
+                    {
+                        Message = "Su cuenta está bloqueada temporalmente por múltiples intentos fallidos. Intente nuevamente más tarde.",
+                        StatusCode = 400
+                    });
                 }
 
                 user.locked_until = null;
