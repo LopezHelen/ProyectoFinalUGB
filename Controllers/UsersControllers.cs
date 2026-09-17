@@ -36,40 +36,40 @@ namespace UGB.MVC.Controllers
                 return BadRequest(validation.ToErrorResponse());
             }
 
-            if(await usersRepository.GetByEmail(createUserDTO.email) != null)
+            if(await usersRepository.GetByEmail(createUserDTO.email) == null)
             {
-                return BadRequest(new ErrorResponse
+                HashedPassword hashedPassword = HashHelper.Hash(createUserDTO.password);
+
+                users user = CustomMapper<users>.Map(createUserDTO);
+                user.password_hash = hashedPassword.Password;
+                user.salt = hashedPassword.Salt;
+                user.created_on = DateTime.UtcNow;
+                user.email_confirmed = false;
+                user.email_confirmation_token = Guid.NewGuid();
+
+                user = await usersRepository.Insert(user);
+
+                roles defaultRole = await rolesRepository.GetByName(DefaultRole)
+                    ?? throw new InvalidOperationException("No se encontró el rol predeterminado.");
+
+                await rolesRepository.AssignRoleToUser(user.id, defaultRole.id);
+
+                string confirmUrl = $"{Request.Scheme}://{Request.Host}/api/Users/confirm-email?token={user.email_confirmation_token}";
+                await emailService.SendMail(new Email
                 {
-                    Message = "Este correo ya se encuentra registrado.",
-                    StatusCode = 400
+                    To = user.email,
+                    Subject = "Confirma tu correo electrónico",
+                    Body = $"<p>Gracias por registrarte. Para activar tu cuenta confirma tu correo haciendo clic en el siguiente enlace:</p><p><a href=\"{confirmUrl}\">{confirmUrl}</a></p>"
                 });
             }
-
-            HashedPassword hashedPassword = HashHelper.Hash(createUserDTO.password);
-
-            users user = CustomMapper<users>.Map(createUserDTO);
-            user.password_hash = hashedPassword.Password;
-            user.salt = hashedPassword.Salt;
-            user.created_on = DateTime.UtcNow;
-            user.email_confirmed = false;
-            user.email_confirmation_token = Guid.NewGuid();
-
-            user = await usersRepository.Insert(user);
-
-            roles defaultRole = await rolesRepository.GetByName(DefaultRole)
-                ?? throw new InvalidOperationException("No se encontró el rol predeterminado.");
-
-            await rolesRepository.AssignRoleToUser(user.id, defaultRole.id);
-
-            string confirmUrl = $"{Request.Scheme}://{Request.Host}/api/Users/confirm-email?token={user.email_confirmation_token}";
-            await emailService.SendMail(new Email
+            else
             {
-                To = user.email,
-                Subject = "Confirma tu correo electrónico",
-                Body = $"<p>Gracias por registrarte. Para activar tu cuenta confirma tu correo haciendo clic en el siguiente enlace:</p><p><a href=\"{confirmUrl}\">{confirmUrl}</a></p>"
-            });
+                // Trabajo equivalente al de un registro real para no filtrar,
+                // por diferencia de tiempo de respuesta, si el correo ya existe.
+                HashHelper.Hash(createUserDTO.password);
+            }
 
-            return Ok(CustomMapper<UserDTO>.Map(user));
+            return Ok(new { Message = "Si el correo es válido, recibirá un enlace de confirmación." });
         }
 
         [HttpGet("confirm-email")]

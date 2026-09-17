@@ -13,9 +13,10 @@ namespace UGB.MVC.Validations.UsersValidation
 
             RuleFor(x => x.password)
                 .NotEmpty().WithMessage("La contraseña no debe estar vacía.")
-                .MinimumLength(6).WithMessage("La contraseña debe tener al menos 6 caracteres.")
-                .MaximumLength(10).WithMessage("La contraseña no debe exceder los 10 caracteres.")
-                .Matches(@"[A-Za-z]").WithMessage("La contraseña debe contener al menos una letra (mayúscula o minúscula).");
+                .MinimumLength(8).WithMessage("La contraseña debe tener al menos 8 caracteres.")
+                .MaximumLength(64).WithMessage("La contraseña no debe exceder los 64 caracteres.")
+                .Matches(@"[A-Za-z]").WithMessage("La contraseña debe contener al menos una letra (mayúscula o minúscula).")
+                .Matches(@"[0-9]").WithMessage("La contraseña debe contener al menos un número.");
 
             RuleFor(x => x.passwordConfirm)
                 .NotEmpty().WithMessage("Debe confirmar la contraseña.")

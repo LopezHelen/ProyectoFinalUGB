@@ -9,7 +9,8 @@ namespace UGB.MVC.Validations.CommentsValidation
         {
             RuleFor(x => x.content)
                 .NotEmpty().WithMessage("El comentario no debe estar vacío.")
-                .Length(1, 200).WithMessage("El comentario no debe exceder los 200 caracteres.");
+                .Length(1, 200).WithMessage("El comentario no debe exceder los 200 caracteres.")
+                .Must(x => !x.Contains('<') && !x.Contains('>')).WithMessage("El comentario no debe contener etiquetas HTML.");
         }
     }
 }
